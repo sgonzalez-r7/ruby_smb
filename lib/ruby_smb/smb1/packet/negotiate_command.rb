@@ -6,6 +6,7 @@ module RubySMB
       # Negotiate command.
       module NegotiateCommand
         autoload :RequestDataBlock, 'ruby_smb/smb1/packet/negotiate_command/request_data_block'
+        autoload :Request, 'ruby_smb/smb1/packet/negotiate_command/request'
       end
     end
   end
