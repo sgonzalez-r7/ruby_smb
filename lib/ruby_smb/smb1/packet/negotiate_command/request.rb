@@ -18,6 +18,10 @@ module RubySMB
             self.smb_header = header
           end
 
+          def set_dialects(dialects=[])
+            raise ArgumentError, 'Must be an Array of Dialects' unless dialects.kind_of? Array
+
+          end
         end
       end
     end

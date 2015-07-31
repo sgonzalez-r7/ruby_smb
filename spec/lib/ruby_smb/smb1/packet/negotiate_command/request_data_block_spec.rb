@@ -15,6 +15,10 @@ RSpec.describe RubySMB::SMB1::Packet::NegotiateCommand::RequestDataBlock do
         buffer_format_field = dialect.fields.detect { |f| f.name == :buffer_format }
         expect(buffer_format_field.length).to eq 8
       end
+
+      it 'should default to 0x2' do
+        expect(dialect.buffer_format).to eq 0x2
+      end
     end
 
     describe '#dialect_string' do
