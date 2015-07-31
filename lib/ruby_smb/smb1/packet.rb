@@ -6,6 +6,8 @@ module RubySMB
       autoload :SMBHeader, 'ruby_smb/smb1/packet/smb_header'
       autoload :SMBDataBlock, 'ruby_smb/smb1/packet/smb_data_block'
       autoload :AndXBlock, 'ruby_smb/smb1/packet/andx_block'
+
+      autoload :NegotiateCommand, 'ruby_smb/smb1/packet/negotiate_command'
     end
   end
 end
