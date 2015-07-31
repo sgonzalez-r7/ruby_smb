@@ -21,7 +21,7 @@ module RubySMB
           def set_dialects(dialects=[])
             raise ArgumentError, 'Must be an Array of Dialects' unless dialects.kind_of? Enumerable
             bad_dialect = dialects.detect{ |dialect| !dialect.is_a? RubySMB::SMB1::Packet::NegotiateCommand::RequestDataBlock::Dialect }
-
+            raise ArgumentError, "#{bad_dialect} is not a valid Dialect" if bad_dialect
           end
         end
       end
