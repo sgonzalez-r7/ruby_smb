@@ -1,11 +1,29 @@
 module RubySMB
-  module SMB1
-    # This module holds the namespace for all SMB1 packets and related structures.
-    module Packet
-      autoload :SMBParameterBlock, 'ruby_smb/smb1/packet/smb_parameter_block'
-      autoload :SMBHeader, 'ruby_smb/smb1/packet/smb_header'
-      autoload :SMBDataBlock, 'ruby_smb/smb1/packet/smb_data_block'
-      autoload :AndXBlock, 'ruby_smb/smb1/packet/andx_block'
-    end
+module SMB1
+module Packet
+  # autoload :SMBParameterBlock, 'ruby_smb/smb1/packet/smb_parameter_block'
+
+class << self
+  def for(command)
+    header = {
+               protocol: "\xFFSMB",
+                command: "\x72",
+                 status: "\x00\x00\x00\x00",
+                  flags: "\x00",
+                 flags2: "\x00\x00",
+               pid_high: "\x00\x00",
+      security_features: "\x00\x00\x00\x00\x00\x00\x00\x00",
+               reserved: "\x00\x00",
+                    tid: "\x00\x00",
+                pid_low: "\x00\x00",
+                    uid: "\x00\x00",
+                    mid: "\x00\x00"
+    }
+    header.values.join
   end
+end
+
+
+end
+end
 end
