@@ -4,7 +4,10 @@ module Packet
   # autoload :SMBParameterBlock, 'ruby_smb/smb1/packet/smb_parameter_block'
 
 class << self
-  def for(command)
+  def for(command,dialects:)
+    dialects_value   = dialects.join
+    n_bytes_dialects = dialects_value.bytes.size
+
     header = {
                protocol: "\xFFSMB",
                 command: "\x72",
@@ -25,8 +28,8 @@ class << self
     }.values.join
 
     data = {
-      byte_count: "\x0A",
-      dialects:   ["NT LM 0.12"]
+      byte_count: n_bytes_dialects,
+      dialects:   dialects_value
     }.values.join
 
     header + params + data

@@ -4,6 +4,10 @@ module RubySMB
 module SMB1
 RSpec.describe Packet do
   describe '.for(:SMB_COM_NEGOTIATE)' do
+    let(:dialects)         { ["West Coast", "East Coast"] }
+    let(:dialects_value)   { dialects.join                }
+    let(:n_bytes_dialects) { dialects_value.bytes.size    }
+
     let(:packet) do
       {
         header: {
@@ -26,20 +30,23 @@ RSpec.describe Packet do
         },
 
         data: {
-          byte_count: "\x0A",
-            dialects: ["NT LM 0.12"]
+          byte_count: n_bytes_dialects,
+            dialects: dialects_value
         }
-    }
+      }
     end
-
 
     it 'generates the packet for SMB_COM_NEGOTIATE' do
       header = packet[:header].values.join
       params = packet[:params].values.join
       data   = packet[:data].values.join
 
-      packet = header + params + data
-      expect(Packet.for(:SMB_COM_NEGOTIATE)).to eql packet
+      packet_spec = header + params + data
+
+      generated_packet = Packet.for(:SMB_COM_NEGOTIATE,
+                                    dialects: dialects)
+
+      expect(generated_packet).to eql packet_spec
     end
   end
 end
