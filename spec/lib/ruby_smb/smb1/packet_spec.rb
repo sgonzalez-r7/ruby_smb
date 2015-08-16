@@ -20,15 +20,26 @@ RSpec.describe Packet do
                         uid: "\x00\x00",
                         mid: "\x00\x00"
         },
-        params: "",
-        data:   "",
+
+        params: {
+          word_count: "\x00"
+        },
+
+        data: {
+          byte_count: "\x0A",
+            dialects: ["NT LM 0.12"]
+        }
     }
     end
 
 
     it 'generates the packet for SMB_COM_NEGOTIATE' do
       header = packet[:header].values.join
-      expect(Packet.for(:SMB_COM_NEGOTIATE)).to eql header
+      params = packet[:params].values.join
+      data   = packet[:data].values.join
+
+      packet = header + params + data
+      expect(Packet.for(:SMB_COM_NEGOTIATE)).to eql packet
     end
   end
 end

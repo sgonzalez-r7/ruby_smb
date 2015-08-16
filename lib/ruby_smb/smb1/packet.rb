@@ -18,8 +18,18 @@ class << self
                 pid_low: "\x00\x00",
                     uid: "\x00\x00",
                     mid: "\x00\x00"
-    }
-    header.values.join
+    }.values.join
+
+    params = {
+      word_count: "\x00"
+    }.values.join
+
+    data = {
+      byte_count: "\x0A",
+      dialects:   ["NT LM 0.12"]
+    }.values.join
+
+    header + params + data
   end
 end
 
