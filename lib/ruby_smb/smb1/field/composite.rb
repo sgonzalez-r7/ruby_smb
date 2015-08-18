@@ -2,10 +2,10 @@ module RubySMB
 module SMB1
 module Field
 class  Composite < Base
-  attr_accessor :sub_fields
+  attr_accessor :n_bytes, :sub_fields
 
-  def initialize(n_bytes: 0)
-    super(n_bytes: n_bytes)
+  def child_initialize(options)
+    @n_bytes =    options[:n_bytes] ||= 0
     @sub_fields = []
   end
 
@@ -14,7 +14,7 @@ class  Composite < Base
   end
 
   def build
-    binary_string = ''
+    binary_string = ""
     sub_fields.each do |sub_field|
       binary_string += sub_field.build
     end

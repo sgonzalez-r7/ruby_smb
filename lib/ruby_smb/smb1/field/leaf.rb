@@ -2,11 +2,11 @@ module RubySMB
 module SMB1
 module Field
 class  Leaf < Base
-  attr_accessor :value
+  attr_accessor :n_bytes, :value
 
-  def initialize(n_bytes: 0, value: '')
-    super(n_bytes: n_bytes)
-    @value = value
+  def child_initialize(options)
+    @n_bytes = options[:n_bytes] ||= 0
+    @value   = options[:value]   ||= ''
   end
 
   def build

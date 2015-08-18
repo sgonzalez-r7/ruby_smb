@@ -2,15 +2,17 @@ module RubySMB
 module SMB1
 module Field
 class  Base
-  attr_accessor :n_bytes
-
-  def initialize(n_bytes: 0)
-    @n_bytes = n_bytes
+  def initialize(options={})
+    child_initialize(options)
   end
 
   def build
     raise StandardError,
           'Method build not implemented for abstract class'
+  end
+
+  def child_initialize(options={})
+    nil
   end
 end
 end
