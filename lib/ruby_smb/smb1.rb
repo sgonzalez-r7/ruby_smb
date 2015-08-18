@@ -1,8 +1,9 @@
 # This module adds the namespace for version 1 of the SMB Protocol
 # as defined in [MS-SMB](https://msdn.microsoft.com/en-us/library/cc246231.aspx)
 module RubySMB::SMB1
-  autoload :Field,  'ruby_smb/smb1/field'
-  autoload :Packet, 'ruby_smb/smb1/packet'
+  autoload :Field,   'ruby_smb/smb1/field'
+  autoload :Packet,  'ruby_smb/smb1/packet'
+  autoload :Request, 'ruby_smb/smb1/request'
 
   COMMANDS = {
     SMB_COM_NO_ANDX_COMMAND: 0xFF
