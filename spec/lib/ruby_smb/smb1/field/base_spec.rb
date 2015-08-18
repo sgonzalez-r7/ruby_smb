@@ -2,12 +2,12 @@ require 'spec_helper'
 
 module RubySMB
 module SMB1
-module Packet
+module Field
 
-RSpec.describe Field do
+RSpec.describe Base do
   describe '#build' do
     it 'raises an error if #build is called on Field' do
-      field = Field.new
+      field = Base.new
       expect{field.build}.to \
         raise_error StandardError,
                     'Method build not implemented for abstract class'
