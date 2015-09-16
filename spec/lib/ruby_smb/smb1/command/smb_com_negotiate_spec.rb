@@ -137,8 +137,9 @@ RSpec.describe SMB_COM_NEGOTIATE do
     it 'generates a binary string' do
       smb_com_negotiate = SMB_COM_NEGOTIATE.new
       smb_header        = smb_com_negotiate.smb_header
+      binary_string     = smb_com_negotiate.to_binary_s(smb_header)
 
-      smb_com_negotiate.to_binary_s(smb_header)
+      expect(binary_string).to eql "\xFFSMBr\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00".bytes.pack('C*')
     end
   end
 end
