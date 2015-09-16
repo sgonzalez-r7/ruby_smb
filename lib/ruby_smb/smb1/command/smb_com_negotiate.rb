@@ -14,9 +14,9 @@ class  SMB_COM_NEGOTIATE
       security_features: { n_bytes: 8 },
                reserved: { n_bytes: 2 },
                     tid: { n_bytes: 2 },
-               pid_low:  { n_bytes: 2 },
-                   uid:  { n_bytes: 2 },
-                   mid:  { n_bytes: 2 }
+                pid_low: { n_bytes: 2 },
+                    uid: { n_bytes: 2 },
+                    mid: { n_bytes: 2 }
     }
   end
 
