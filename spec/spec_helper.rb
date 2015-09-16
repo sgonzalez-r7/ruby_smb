@@ -1,5 +1,6 @@
 require 'simplecov'
 require 'coveralls'
+require 'awesome_print'
 
 if ENV['TRAVIS'] == 'true'
   # don't generate local report as it is inaccessible on travis-ci, which is

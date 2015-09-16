@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'pry'
+gem 'awesome_print'
 
 group :test do
   # simplecov test formatter and uploader for Coveralls.io
