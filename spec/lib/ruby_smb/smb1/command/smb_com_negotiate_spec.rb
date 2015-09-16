@@ -33,7 +33,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
     end
   end
 
-
   describe 'status field' do
     it 'is 4 bytes in length' do
       smb_com_negotiate = SMB_COM_NEGOTIATE.new
@@ -63,7 +62,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
       expect(flags2[:n_bytes]).to eql 2
     end
   end
-
 
   describe 'pid_high field' do
     it 'is 2 bytes in length' do
