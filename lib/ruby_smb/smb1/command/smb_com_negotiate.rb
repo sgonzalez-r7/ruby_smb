@@ -5,18 +5,18 @@ class  SMB_COM_NEGOTIATE
 
   def smb_header
     {
-               protocol: { n_bytes: 4 },
-                command: { n_bytes: 1 },
-                 status: { n_bytes: 4 },
-                  flags: { n_bytes: 1 },
-                 flags2: { n_bytes: 2 },
-               pid_high: { n_bytes: 2 },
-      security_features: { n_bytes: 8 },
-               reserved: { n_bytes: 2 },
-                    tid: { n_bytes: 2 },
-                pid_low: { n_bytes: 2 },
-                    uid: { n_bytes: 2 },
-                    mid: { n_bytes: 2 }
+               protocol: { n_bytes: 4, value: "\xFFSMB"  },
+                command: { n_bytes: 1, value: "\x72"     },
+                 status: { n_bytes: 4, value: "\x00" * 4 },
+                  flags: { n_bytes: 1, value: "\x00" * 1 },
+                 flags2: { n_bytes: 2, value: "\x00" * 2 },
+               pid_high: { n_bytes: 2, value: "\x00" * 2 },
+      security_features: { n_bytes: 8, value: "\x00" * 8 },
+               reserved: { n_bytes: 2, value: "\x00" * 2 },
+                    tid: { n_bytes: 2, value: "\x00" * 2 },
+                pid_low: { n_bytes: 2, value: "\x00" * 2 },
+                    uid: { n_bytes: 2, value: "\x00" * 2 },
+                    mid: { n_bytes: 2, value: "\x00" * 2 }
     }
   end
 
@@ -24,6 +24,13 @@ class  SMB_COM_NEGOTIATE
     fields        = smb_block.keys
     field_lengths = fields.map { |field| smb_block[field][:n_bytes] }
     n_bytes       = field_lengths.reduce(:+)
+  end
+
+  def to_binary_s(smb_block)
+    fields        = smb_block.keys
+    field_values  = fields.map { |field| smb_block[field][:value] }
+    binary_string = field_values.reduce(:+)
+    ap binary_string
   end
 
 end

@@ -133,6 +133,14 @@ RSpec.describe SMB_COM_NEGOTIATE do
     end
   end
 
+  describe '#to_binary_s' do
+    it 'generates a binary string' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_header        = smb_com_negotiate.smb_header
+
+      smb_com_negotiate.to_binary_s(smb_header)
+    end
+  end
 end
 end
 end
