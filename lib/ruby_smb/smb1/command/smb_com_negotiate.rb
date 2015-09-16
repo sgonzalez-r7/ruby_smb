@@ -20,9 +20,9 @@ class  SMB_COM_NEGOTIATE
     }
   end
 
-  def n_bytes_smb_header
-    fields        = smb_header.keys
-    field_lengths = fields.map { |field| smb_header[field][:n_bytes] }
+  def n_bytes(smb_block)
+    fields        = smb_block.keys
+    field_lengths = fields.map { |field| smb_block[field][:n_bytes] }
     n_bytes       = field_lengths.reduce(:+)
   end
 
