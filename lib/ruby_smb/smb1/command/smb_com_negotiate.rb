@@ -27,6 +27,14 @@ class  SMB_COM_NEGOTIATE
     }
   end
 
+  def smb_data
+    {
+      bytecount:      { n_bytes: 2,  value: "\xA0"       },
+      buffer_format:  { n_bytes: 1,  value: "\x02"       },
+      dialect_string: { n_bytes: 10, value: "NT LM 0.12" }
+    }
+  end
+
   def n_bytes(smb_block)
     fields        = smb_block.keys
     field_lengths = fields.map { |field| smb_block[field][:n_bytes] }

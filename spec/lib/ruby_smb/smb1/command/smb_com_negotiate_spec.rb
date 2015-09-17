@@ -176,6 +176,45 @@ RSpec.describe SMB_COM_NEGOTIATE do
     it 'has a binary string representation'
   end
 
+  describe '#smb_data' do
+    it 'is 13 bytes in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_data          = smb_com_negotiate.smb_data
+
+      expect(smb_com_negotiate.n_bytes(smb_data)).to eql 13
+    end
+  end
+
+  describe 'bytecount' do
+    it 'is 2 bytes in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_data          = smb_com_negotiate.smb_data
+      bytecount         = smb_data[:bytecount]
+
+      expect(bytecount[:n_bytes]).to eql 2
+    end
+  end
+
+  describe 'buffer_format' do
+    it 'is 1 byte in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_data          = smb_com_negotiate.smb_data
+      buffer_format     = smb_data[:buffer_format]
+
+      expect(buffer_format[:n_bytes]).to eql 1
+    end
+  end
+
+  describe 'dialect_string' do
+    it 'is 1 byte in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_data          = smb_com_negotiate.smb_data
+      dialect_string    = smb_data[:dialect_string]
+
+      expect(dialect_string[:n_bytes]).to eql 10
+    end
+  end
+
 end
 end
 end
