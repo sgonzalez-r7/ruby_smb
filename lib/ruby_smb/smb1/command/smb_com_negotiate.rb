@@ -3,8 +3,9 @@ module SMB1
 module Command
 class  SMB_COM_NEGOTIATE
 
-  def smb_header
+  def packet
     {
+      # smb_header
                protocol: { n_bytes: 4, value: "\xFFSMB" },
                 command: { n_bytes: 1, value: "\x72"    },
                  status: { n_bytes: 4, value: "\x00"    },
@@ -16,22 +17,15 @@ class  SMB_COM_NEGOTIATE
                     tid: { n_bytes: 2, value: "\x00"    },
                 pid_low: { n_bytes: 2, value: "\x00"    },
                     uid: { n_bytes: 2, value: "\x00"    },
-                    mid: { n_bytes: 2, value: "\x00"    }
-    }
-  end
+                    mid: { n_bytes: 2, value: "\x00"    },
+      # smb_parameters
+              wordcount: { n_bytes: 1, value: "\x00"    },
+                  words: { n_bytes: 0, value: ''        },
 
-  def smb_parameters
-    {
-      wordcount: { n_bytes: 1, value: "\x00"  },
-      words:     { n_bytes: 0, value: ''      }
-    }
-  end
-
-  def smb_data
-    {
-      bytecount:      { n_bytes: 2,  value: "\xA0"       },
-      buffer_format:  { n_bytes: 1,  value: "\x02"       },
-      dialect_string: { n_bytes: 10, value: "NT LM 0.12" }
+      # smb_data
+              bytecount: { n_bytes: 2,  value: "\xA0"       },
+          buffer_format: { n_bytes: 1,  value: "\x02"       },
+         dialect_string: { n_bytes: 10, value: "NT LM 0.12" },
     }
   end
 
@@ -41,17 +35,16 @@ class  SMB_COM_NEGOTIATE
     n_bytes       = field_lengths.reduce(:+)
   end
 
-  def to_binary_s(smb_block)
-    fields        = smb_block.keys
-    field_bytes   = fields.map do |field|
-                      length_field = smb_block[field][:n_bytes]
-                      length_value = smb_block[field][:value].bytes.length
-                      expansion    = length_field - length_value + 1
-
-                      (smb_block[field][:value] * expansion).bytes.pack('C*')
+  def to_binary_s
+    fields        = packet.values
+    field_values  = fields.map do |f|
+                      n_bytes       = f[:n_bytes]
+                      n_bytes_value = f[:value].bytes.count
+                      padding = "\x00" * (n_bytes - n_bytes_value)
+                      f[:value] + padding
                     end
 
-    binary_string = field_bytes.reduce(:+)
+    binary_string = field_values.reduce(:+).bytes.pack('C*')
   end
 end
 end

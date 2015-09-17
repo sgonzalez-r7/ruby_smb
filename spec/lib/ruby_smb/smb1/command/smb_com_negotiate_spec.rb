@@ -133,16 +133,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
     end
   end
 
-  describe '#to_binary_s' do
-    it 'generates a binary string' do
-      smb_com_negotiate = SMB_COM_NEGOTIATE.new
-      smb_header        = smb_com_negotiate.smb_header
-      binary_string     = smb_com_negotiate.to_binary_s(smb_header)
-
-      expect(binary_string).to eql "\xFFSMBr\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00".bytes.pack('C*')
-    end
-  end
-
   describe '#smb_parameters' do
     it 'is 1 byte in length' do
       smb_com_negotiate = SMB_COM_NEGOTIATE.new
@@ -212,6 +202,39 @@ RSpec.describe SMB_COM_NEGOTIATE do
       dialect_string    = smb_data[:dialect_string]
 
       expect(dialect_string[:n_bytes]).to eql 10
+    end
+  end
+
+  describe '#to_binary_s' do
+    it 'generates a binary string' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      binary_string     = smb_com_negotiate.to_binary_s
+
+      # ap binary_string
+
+      packed_fixture = {
+                 protocol: "\xFFSMB",
+                  command: "r",
+                   status: "\x00\x00\x00\x00",
+                    flags: "\x00",
+                   flags2: "\x00\x00",
+                 pid_high: "\x00\x00",
+        security_features: "\x00\x00\x00\x00\x00\x00\x00\x00",
+                 reserved: "\x00\x00",
+                      tid: "\x00\x00",
+                  pid_low: "\x00\x00",
+                      uid: "\x00\x00",
+                      mid: "\x00\x00",
+
+               word_count: "\x00",
+                    words: "",
+
+               byte_count: "\xA0\x00",
+            buffer_format: "\x02",
+           dialect_string: "NT LM 0.12",
+      }.values.reduce(:+).bytes.pack('C*')
+
+      expect(binary_string).to eql packed_fixture
     end
   end
 
