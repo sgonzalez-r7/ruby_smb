@@ -117,7 +117,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
     it 'is 2 bytes in length' do
       smb_com_negotiate = SMB_COM_NEGOTIATE.new
       smb_header        = smb_com_negotiate.smb_header
-      uid              = smb_header[:uid]
+      uid               = smb_header[:uid]
 
       expect(uid[:n_bytes]).to eql 2
     end
