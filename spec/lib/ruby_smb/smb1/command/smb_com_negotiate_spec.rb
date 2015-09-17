@@ -142,6 +142,40 @@ RSpec.describe SMB_COM_NEGOTIATE do
       expect(binary_string).to eql "\xFFSMBr\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00".bytes.pack('C*')
     end
   end
+
+  describe '#smb_parameters' do
+    it 'is 1 byte in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_parameters    = smb_com_negotiate.smb_parameters
+
+      expect(smb_com_negotiate.n_bytes(smb_parameters)).to eql 1
+    end
+  end
+
+  describe 'wordcount' do
+    it 'is 1 byte in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_parameters    = smb_com_negotiate.smb_parameters
+      wordcount         = smb_parameters[:wordcount]
+
+      expect(wordcount[:n_bytes]).to eql 1
+    end
+  end
+
+  describe 'words' do
+    it 'is 0 bytes in length' do
+      smb_com_negotiate = SMB_COM_NEGOTIATE.new
+      smb_parameters    = smb_com_negotiate.smb_parameters
+      words             = smb_parameters[:words]
+
+      expect(words[:n_bytes]).to eql 0
+    end
+  end
+
+  describe 'smb_parameters' do
+    it 'has a binary string representation'
+  end
+
 end
 end
 end

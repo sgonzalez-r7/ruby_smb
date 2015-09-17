@@ -20,6 +20,13 @@ class  SMB_COM_NEGOTIATE
     }
   end
 
+  def smb_parameters
+    {
+      wordcount: { n_bytes: 1, value: "\x00"  },
+      words:     { n_bytes: 0, value: ''      }
+    }
+  end
+
   def n_bytes(smb_block)
     fields        = smb_block.keys
     field_lengths = fields.map { |field| smb_block[field][:n_bytes] }
