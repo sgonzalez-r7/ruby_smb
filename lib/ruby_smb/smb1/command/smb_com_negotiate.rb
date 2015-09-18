@@ -2,7 +2,6 @@ module RubySMB
 module SMB1
 module Command
 class  SMB_COM_NEGOTIATE
-
   attr_reader :params
 
   def initialize(params:{})
