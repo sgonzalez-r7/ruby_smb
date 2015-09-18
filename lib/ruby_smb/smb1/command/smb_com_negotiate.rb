@@ -3,79 +3,118 @@ module SMB1
 module Command
 class  SMB_COM_NEGOTIATE
 
-  # command has
-  def params
+  attr_reader :params
+
+  def initialize(params:{})
+    @params = default_params.merge(params)
+  end
+
+  def build
+    @packet = to_binary_s
+  end
+
+  def default_params
     {
-      # smb_header
-               protocol: "\xFFSMB",
-                command: "\x72",
-                 status: "\x00",
-                  flags: "\x00",
-                 flags2: "\x00",
-               pid_high: "\x00",
-      security_features: "\x00",
-               reserved: "\x00",
-                    tid: "\x00",
-                pid_low: "\x00",
-                    uid: "\x00",
-                    mid: "\x00",
+      #smb_header
+               protocol: { n_bytes:  4,  value:  "\xFFSMB"    },
+                command: { n_bytes:  1,  value:  "\x72"       },
+                 status: { n_bytes:  4,  value:  "\x00"       },
+                  flags: { n_bytes:  1,  value:  "\x00"       },
+                 flags2: { n_bytes:  2,  value:  "\x00"       },
+               pid_high: { n_bytes:  2,  value:  "\x00"       },
+      security_features: { n_bytes:  8,  value:  "\x00"       },
+               reserved: { n_bytes:  2,  value:  "\x00"       },
+                    tid: { n_bytes:  2,  value:  "\x00"       },
+                pid_low: { n_bytes:  2,  value:  "\x00"       },
+                    uid: { n_bytes:  2,  value:  "\x00"       },
+                    mid: { n_bytes:  2,  value:  "\x00"       },
 
-      # smb_parameters
-             word_count: "\x00",
-                  words: "",
+      #smb_parameters
+             word_count: { n_bytes:  1,  value:  "\x00"       },
+                  words: { n_bytes:  0,  value:  ""           },
 
-      # smb_data,
-             byte_count:  "\xA0",
-          buffer_format:  "\x02",
-         dialect_string:  "NT LM 0.12",
+      #smb_data
+             byte_count: { n_bytes:  2,  value: "\xA0"        },
+          buffer_format: { n_bytes:  1,  value: "\x02"        },
+         dialect_string: { n_bytes: 10,  value: "NT LM 0.12"  },
     }
   end
 
+  def field(name)
+    fields.select{ |field| field[:name] == name }.first
+  end
+
+  def fields
+    structure
+  end
+
+  def n_bytes_actual
+    normalize(packet).bytes.count
+  end
+
+  def n_bytes_allocated
+    fields.map{ |f| f[:n_bytes] }.reduce(:+)
+  end
+
+  # does belong in a mixin?
+  def normalize(string)
+    string.bytes.pack('C*')
+  end
 
   def packet
-    {
-      # smb_header
-               protocol: { n_bytes:  4, value: params[:protocol]          },
-                command: { n_bytes:  1, value: params[:command]           },
-                 status: { n_bytes:  4, value: params[:status]            },
-                  flags: { n_bytes:  1, value: params[:flags]             },
-                 flags2: { n_bytes:  2, value: params[:flags2]            },
-               pid_high: { n_bytes:  2, value: params[:pid_high]          },
-      security_features: { n_bytes:  8, value: params[:security_features] },
-               reserved: { n_bytes:  2, value: params[:reserved]          },
-                    tid: { n_bytes:  2, value: params[:tid]               },
-                pid_low: { n_bytes:  2, value: params[:pid_low]           },
-                    uid: { n_bytes:  2, value: params[:uid]               },
-                    mid: { n_bytes:  2, value: params[:mid]               },
-      # smb_parameters
-             word_count: { n_bytes:  1, value: params[:word_count]        },
-                  words: { n_bytes:  0, value: params[:words]             },
-
-      # smb_data
-             byte_count: { n_bytes:  2, value: params[:byte_count]        },
-          buffer_format: { n_bytes:  1, value: params[:buffer_format]     },
-         dialect_string: { n_bytes: 10, value: params[:dialect_string]    },
-    }
+    build
   end
 
-  # command does these things
+  def structure
+    [
+      # smb_header
+      { name: :protocol,           n_bytes: params[:protocol][:n_bytes],          value: params[:protocol][:value] },
+      { name: :command,            n_bytes: params[:command][:n_bytes] ,          value: params[:command][:value] },
+      { name: :status,             n_bytes: params[:status][:n_bytes],            value: params[:status][:value] },
+      { name: :flags,              n_bytes: params[:flags][:n_bytes],             value: params[:flags][:value] },
+      { name: :flags2,             n_bytes: params[:flags2][:n_bytes],            value: params[:flags2][:value] },
+      { name: :pid_high,           n_bytes: params[:pid_high][:n_bytes],          value: params[:pid_high][:value] },
+      { name: :security_features,  n_bytes: params[:security_features][:n_bytes], value: params[:security_features][:value] },
+      { name: :reserved,           n_bytes: params[:reserved][:n_bytes],          value: params[:reserved][:value] },
+      { name: :tid,                n_bytes: params[:tid][:n_bytes],               value: params[:tid][:value] },
+      { name: :pid_low,            n_bytes: params[:pid_low][:n_bytes],           value: params[:pid_low][:value] },
+      { name: :uid,                n_bytes: params[:uid][:n_bytes],               value: params[:uid][:value] },
+      { name: :mid,                n_bytes: params[:mid][:n_bytes],               value: params[:mid][:value] },
 
-  def n_bytes(smb_block)
-    fields        = smb_block.keys
-    field_lengths = fields.map { |field| smb_block[field][:n_bytes] }
-    n_bytes       = field_lengths.reduce(:+)
+      # smb_parameters
+      { name: :word_count,         n_bytes: params[:word_count][:n_bytes],        value: params[:word_count][:value] },
+      { name: :words,              n_bytes: params[:words][:n_bytes],             value: params[:words][:value] },
+
+      # smb_data
+      { name: :byte_count,         n_bytes: params[:byte_count][:n_bytes],        value: params[:byte_count][:value] },
+      { name: :buffer_format,      n_bytes: params[:buffer_format][:n_bytes],     value: params[:buffer_format][:value] },
+      { name: :dialect_string,     n_bytes: params[:dialect_string][:n_bytes],    value: params[:dialect_string][:value] },
+    ]
   end
 
   def to_binary_s
-    fields        = packet.values
-    field_values  = fields.map do |f|
-                      n_bytes       = f[:n_bytes]
-                      n_bytes_value = f[:value].bytes.count
-                      padding = "\x00" * (n_bytes - n_bytes_value)
-                      f[:value] + padding
-                    end
+    fields.map do |f|
+                 n_bytes_allocated = f[:n_bytes]
+                 n_bytes_actual    = normalize(f[:value]).bytes.count
 
-    binary_string = field_values.reduce(:+).bytes.pack('C*')
+                 if n_bytes_allocated > n_bytes_actual
+                   padding = normalize("\x00" * (n_bytes_allocated - n_bytes_actual))
+                 else
+                   padding = ""
+                 end
+
+                 normalize(f[:value]) + normalize(padding)
+               end.reduce(:+).bytes.pack('C*')
+  end
+
+  def validate
+    validate_actual_gt_allocated
+  end
+
+  def validate_actual_gt_allocated
+    if (n_bytes_actual > n_bytes_allocated)
+      raise 'Actual packet size is larger than the allocated size'
+    end
   end
 end
 end
