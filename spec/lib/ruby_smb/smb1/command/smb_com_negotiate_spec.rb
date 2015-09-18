@@ -9,7 +9,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
   end
 
   let(:packet_default_spec) do
-    spec = {
+    {
              protocol: "\xFFSMB",
               command: "r",
                status: "\x00\x00\x00\x00",
@@ -30,12 +30,10 @@ RSpec.describe SMB_COM_NEGOTIATE do
         buffer_format: "\x02",
        dialect_string: "NT LM 0.12",
      }.values.reduce(:+).bytes.pack('C*')
-
-     normalize(spec)
   end
 
   context 'actual packet size is larger than the allocated size' do
-    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE.new(params: {dialect_string: { n_bytes:10, value: "NT LM 0.12 123" }}) }
+    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE.new(params: {dialect_string: {n_bytes:10, value: "NT LM 0.12 123" }}) }
 
     describe '#validate' do
       it 'returns false' do
