@@ -159,6 +159,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
       end
     end
 
+    #fields
     describe '#fields' do
       it('is tested in #field') { }
     end
@@ -194,7 +195,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
       let(:params) { smb_com_negotiate.params }
 
       #smb_header
-      #protocol
       it 'includes the protocol n_bytes default' do
         n_bytes = params[:protocol][:n_bytes]
         default = 4
@@ -209,7 +209,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #command
       it 'includes the command n_bytes default' do
         n_bytes = params[:command][:n_bytes]
         default = 1
@@ -224,7 +223,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #status
       it 'includes the status n_bytes default' do
         n_bytes = params[:status][:n_bytes]
         default = 4
@@ -239,7 +237,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #flags
       it 'includes the flags n_bytes default' do
         n_bytes = params[:flags][:n_bytes]
         default = 1
@@ -254,7 +251,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #flags2
       it 'includes the flags2 n_bytes default' do
         n_bytes = params[:flags2][:n_bytes]
         default = 2
@@ -269,7 +265,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #pid_high
       it 'includes the pid_high n_bytes default' do
         n_bytes = params[:pid_high][:n_bytes]
         default = 2
@@ -284,7 +279,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #security_features
       it 'includes the security_features n_bytes default' do
         n_bytes = params[:security_features][:n_bytes]
         default = 8
@@ -299,7 +293,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #reserved
       it 'includes the reserved n_bytes default' do
         n_bytes = params[:reserved][:n_bytes]
         default = 2
@@ -314,7 +307,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #tid
       it 'includes the tid n_bytes default' do
         n_bytes = params[:tid][:n_bytes]
         default = 2
@@ -329,7 +321,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #pid_low
       it 'includes the pid_low n_bytes default' do
         n_bytes = params[:pid_low][:n_bytes]
         default = 2
@@ -344,7 +335,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #uid
       it 'includes the uid n_bytes default' do
         n_bytes = params[:uid][:n_bytes]
         default = 2
@@ -359,7 +349,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #mid
       it 'includes the mid n_bytes default' do
         n_bytes = params[:mid][:n_bytes]
         default = 2
@@ -375,7 +364,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
       end
 
       #smb_paratemers
-      #word_count
       it 'includes the word_count n_bytes default' do
         n_bytes = params[:word_count][:n_bytes]
         default = 1
@@ -390,7 +378,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #words
       it 'includes the words n_bytes default' do
         n_bytes = params[:words][:n_bytes]
         default = 0
@@ -406,7 +393,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
       end
 
       #smb_data
-      #byte_count
       it 'includes the byte_count n_bytes default' do
         n_bytes = params[:byte_count][:n_bytes]
         default = 2
@@ -421,7 +407,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #buffer_format
       it 'includes the buffer_format n_bytes default' do
         n_bytes = params[:buffer_format][:n_bytes]
         default = 1
@@ -436,7 +421,6 @@ RSpec.describe SMB_COM_NEGOTIATE do
         expect(value).to eql default
       end
 
-      #dialect_string
       it 'includes the dialect_string n_bytes default' do
         n_bytes = params[:dialect_string][:n_bytes]
         default = 10
