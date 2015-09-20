@@ -2,7 +2,8 @@ module RubySMB
 module SMB1
 module Command
 class  SMB_COM_NEGOTIATE_REQUEST
-  attr_reader :packet, :params
+  attr_reader   :params
+  attr_accessor :packet
 
   def initialize(params:{})
     @params = default_params.merge(params)
@@ -60,29 +61,39 @@ class  SMB_COM_NEGOTIATE_REQUEST
     string.bytes.pack('C*')
   end
 
+  def parse(string_io)
+    fields.each do |f|
+      buffer = []
+      f[:n_bytes].times { buffer << string_io.getbyte }
+      f[:value] = buffer.pack('C*')
+      ap f[:value]
+    end
+  end
+
   def structure
+    p = params
     [
       # smb_header
-      { name: :protocol,           n_bytes: params[:protocol][:n_bytes],          value: params[:protocol][:value] },
-      { name: :command,            n_bytes: params[:command][:n_bytes] ,          value: params[:command][:value] },
-      { name: :status,             n_bytes: params[:status][:n_bytes],            value: params[:status][:value] },
-      { name: :flags,              n_bytes: params[:flags][:n_bytes],             value: params[:flags][:value] },
-      { name: :flags2,             n_bytes: params[:flags2][:n_bytes],            value: params[:flags2][:value] },
-      { name: :pid_high,           n_bytes: params[:pid_high][:n_bytes],          value: params[:pid_high][:value] },
-      { name: :security_features,  n_bytes: params[:security_features][:n_bytes], value: params[:security_features][:value] },
-      { name: :reserved,           n_bytes: params[:reserved][:n_bytes],          value: params[:reserved][:value] },
-      { name: :tid,                n_bytes: params[:tid][:n_bytes],               value: params[:tid][:value] },
-      { name: :pid_low,            n_bytes: params[:pid_low][:n_bytes],           value: params[:pid_low][:value] },
-      { name: :uid,                n_bytes: params[:uid][:n_bytes],               value: params[:uid][:value] },
-      { name: :mid,                n_bytes: params[:mid][:n_bytes],               value: params[:mid][:value] },
+      { name: :protocol,           n_bytes: p[:protocol][:n_bytes],          value: p[:protocol][:value] },
+      { name: :command,            n_bytes: p[:command][:n_bytes] ,          value: p[:command][:value] },
+      { name: :status,             n_bytes: p[:status][:n_bytes],            value: p[:status][:value] },
+      { name: :flags,              n_bytes: p[:flags][:n_bytes],             value: p[:flags][:value] },
+      { name: :flags2,             n_bytes: p[:flags2][:n_bytes],            value: p[:flags2][:value] },
+      { name: :pid_high,           n_bytes: p[:pid_high][:n_bytes],          value: p[:pid_high][:value] },
+      { name: :security_features,  n_bytes: p[:security_features][:n_bytes], value: p[:security_features][:value] },
+      { name: :reserved,           n_bytes: p[:reserved][:n_bytes],          value: p[:reserved][:value] },
+      { name: :tid,                n_bytes: p[:tid][:n_bytes],               value: p[:tid][:value] },
+      { name: :pid_low,            n_bytes: p[:pid_low][:n_bytes],           value: p[:pid_low][:value] },
+      { name: :uid,                n_bytes: p[:uid][:n_bytes],               value: p[:uid][:value] },
+      { name: :mid,                n_bytes: p[:mid][:n_bytes],               value: p[:mid][:value] },
 
       # smb_parameters
-      { name: :word_count,         n_bytes: params[:word_count][:n_bytes],        value: params[:word_count][:value] },
-      { name: :words,              n_bytes: params[:words][:n_bytes],             value: params[:words][:value] },
+      { name: :word_count,         n_bytes: p[:word_count][:n_bytes],        value: p[:word_count][:value] },
+      { name: :words,              n_bytes: p[:words][:n_bytes],             value: p[:words][:value] },
 
       # smb_data
-      { name: :byte_count,         n_bytes: params[:byte_count][:n_bytes],        value: params[:byte_count][:value] },
-      { name: :dialects,           n_bytes: params[:dialects][:n_bytes],          value: params[:dialects][:value] },
+      { name: :byte_count,         n_bytes: p[:byte_count][:n_bytes],        value: p[:byte_count][:value] },
+      { name: :dialects,           n_bytes: p[:dialects][:n_bytes],          value: p[:dialects][:value] },
     ]
   end
 

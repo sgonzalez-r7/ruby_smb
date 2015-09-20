@@ -415,6 +415,14 @@ RSpec.describe SMB_COM_NEGOTIATE_REQUEST do
 
     end
 
+    #parse
+    describe 'parse' do
+      it 'parses a packet:binary_string' do
+        string_io = StringIO.new packet_default_spec
+        packet    = smb_com_negotiate.parse(string_io)
+      end
+    end
+
     #structure
     describe '#structure' do
       it('is tested in #fields') { }
