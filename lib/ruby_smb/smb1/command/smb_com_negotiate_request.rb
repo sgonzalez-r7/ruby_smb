@@ -35,8 +35,7 @@ class  SMB_COM_NEGOTIATE_REQUEST
 
       #smb_data
              byte_count: { n_bytes:  2,  value: "\xA0\x00"    },
-          buffer_format: { n_bytes:  1,  value: "\x02"        },
-         dialect_string: { n_bytes: 11,  value: "NT LM 0.12\x00"  },
+               dialects: { n_bytes: 34,  value: "\x02NT LM 0.12\x00\x02SMB 2.002\x00\x02SMB 2.???\x00"  },
     }
   end
 
@@ -83,8 +82,7 @@ class  SMB_COM_NEGOTIATE_REQUEST
 
       # smb_data
       { name: :byte_count,         n_bytes: params[:byte_count][:n_bytes],        value: params[:byte_count][:value] },
-      { name: :buffer_format,      n_bytes: params[:buffer_format][:n_bytes],     value: params[:buffer_format][:value] },
-      { name: :dialect_string,     n_bytes: params[:dialect_string][:n_bytes],    value: params[:dialect_string][:value] },
+      { name: :dialects,           n_bytes: params[:dialects][:n_bytes],          value: params[:dialects][:value] },
     ]
   end
 

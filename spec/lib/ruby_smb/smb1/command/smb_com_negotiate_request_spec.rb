@@ -27,13 +27,13 @@ RSpec.describe SMB_COM_NEGOTIATE_REQUEST do
                 words: "",
 
            byte_count: "\xA0\x00",
-        buffer_format: "\x02",
-       dialect_string: "NT LM 0.12\x00",
+             dialects: "\x02NT LM 0.12\x00\x02SMB 2.002\x00\x02SMB 2.???\x00",
      }.values.reduce(:+).bytes.pack('C*')
   end
 
+  # TODO: use dialects
   context 'actual packet size is larger than the allocated size' do
-    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE_REQUEST.new(params: {dialect_string: {n_bytes:10, value: "NT LM 0.12 123" }}) }
+    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE_REQUEST.new(params: {dialects: {n_bytes:34, value: "\x02NT LM 0.12\x00\x02SMB 2.002\x00\x02SMB 2.??? 123\x00" }}) }
 
     describe '#validate' do
       it 'returns false' do
@@ -148,16 +148,6 @@ RSpec.describe SMB_COM_NEGOTIATE_REQUEST do
       it 'includes the :byte_count field' do
         field  = smb_com_negotiate.field(:byte_count)
         expect(field[:name]).to eql :byte_count
-      end
-
-      it 'includes the :buffer_format field' do
-        field  = smb_com_negotiate.field(:buffer_format)
-        expect(field[:name]).to eql :buffer_format
-      end
-
-      it 'includes the :dialect_string field' do
-        field  = smb_com_negotiate.field(:dialect_string)
-        expect(field[:name]).to eql :dialect_string
       end
     end
 
@@ -409,30 +399,16 @@ RSpec.describe SMB_COM_NEGOTIATE_REQUEST do
         expect(value).to eql default
       end
 
-      it 'includes the buffer_format n_bytes default' do
-        n_bytes = params[:buffer_format][:n_bytes]
-        default = 1
+      it 'includes the dialects n_bytes default' do
+        n_bytes = params[:dialects][:n_bytes]
+        default = 34
 
         expect(n_bytes).to eql default
       end
 
-      it 'includes the buffer_format value default' do
-        value   = normalize(params[:buffer_format][:value])
-        default = normalize("\x02")
-
-        expect(value).to eql default
-      end
-
-      it 'includes the dialect_string n_bytes default' do
-        n_bytes = params[:dialect_string][:n_bytes]
-        default = 11
-
-        expect(n_bytes).to eql default
-      end
-
-      it 'includes the dialect_string value default' do
-        value   = normalize(params[:dialect_string][:value])
-        default = normalize("NT LM 0.12\x00")
+      it 'includes the dialects value default' do
+        value   = normalize(params[:dialects][:value])
+        default = normalize("\x02NT LM 0.12\x00\x02SMB 2.002\x00\x02SMB 2.???\x00")
 
         expect(value).to eql default
       end
