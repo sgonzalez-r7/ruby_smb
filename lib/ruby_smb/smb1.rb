@@ -3,5 +3,6 @@
 module RubySMB
 module SMB1
   autoload :Command, 'ruby_smb/smb1/command'
+  autoload :Packet,  'ruby_smb/smb1/packet'
 end
 end
