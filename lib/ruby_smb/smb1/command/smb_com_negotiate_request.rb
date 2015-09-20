@@ -1,11 +1,12 @@
 module RubySMB
 module SMB1
 module Command
-class  SMB_COM_NEGOTIATE
-  attr_reader :params
+class  SMB_COM_NEGOTIATE_REQUEST
+  attr_reader :packet, :params
 
   def initialize(params:{})
     @params = default_params.merge(params)
+    build
   end
 
   def build
@@ -18,12 +19,12 @@ class  SMB_COM_NEGOTIATE
                protocol: { n_bytes:  4,  value:  "\xFFSMB"    },
                 command: { n_bytes:  1,  value:  "\x72"       },
                  status: { n_bytes:  4,  value:  "\x00"       },
-                  flags: { n_bytes:  1,  value:  "\x00"       },
-                 flags2: { n_bytes:  2,  value:  "\x00"       },
+                  flags: { n_bytes:  1,  value:  "\x18"       },
+                 flags2: { n_bytes:  2,  value:  "\x48\x01"   },
                pid_high: { n_bytes:  2,  value:  "\x00"       },
       security_features: { n_bytes:  8,  value:  "\x00"       },
                reserved: { n_bytes:  2,  value:  "\x00"       },
-                    tid: { n_bytes:  2,  value:  "\x00"       },
+                    tid: { n_bytes:  2,  value:  "\xFF\xFF"   },
                 pid_low: { n_bytes:  2,  value:  "\x00"       },
                     uid: { n_bytes:  2,  value:  "\x00"       },
                     mid: { n_bytes:  2,  value:  "\x00"       },
@@ -33,9 +34,9 @@ class  SMB_COM_NEGOTIATE
                   words: { n_bytes:  0,  value:  ""           },
 
       #smb_data
-             byte_count: { n_bytes:  2,  value: "\xA0"        },
+             byte_count: { n_bytes:  2,  value: "\xA0\x00"    },
           buffer_format: { n_bytes:  1,  value: "\x02"        },
-         dialect_string: { n_bytes: 10,  value: "NT LM 0.12"  },
+         dialect_string: { n_bytes: 11,  value: "NT LM 0.12\x00"  },
     }
   end
 
@@ -58,10 +59,6 @@ class  SMB_COM_NEGOTIATE
   # does belong in a mixin?
   def normalize(string)
     string.bytes.pack('C*')
-  end
-
-  def packet
-    build
   end
 
   def structure

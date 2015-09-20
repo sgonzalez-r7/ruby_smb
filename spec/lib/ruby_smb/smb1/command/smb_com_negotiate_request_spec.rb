@@ -3,7 +3,7 @@ require 'spec_helper'
 module RubySMB
 module SMB1
 module Command
-RSpec.describe SMB_COM_NEGOTIATE do
+RSpec.describe SMB_COM_NEGOTIATE_REQUEST do
   def normalize(string)
     string.bytes.pack('C*')
   end
@@ -13,12 +13,12 @@ RSpec.describe SMB_COM_NEGOTIATE do
              protocol: "\xFFSMB",
               command: "r",
                status: "\x00\x00\x00\x00",
-                flags: "\x00",
-               flags2: "\x00\x00",
+                flags: "\x18",
+               flags2: "\x48\x01",
              pid_high: "\x00\x00",
     security_features: "\x00\x00\x00\x00\x00\x00\x00\x00",
              reserved: "\x00\x00",
-                  tid: "\x00\x00",
+                  tid: "\xFF\xFF",
               pid_low: "\x00\x00",
                   uid: "\x00\x00",
                   mid: "\x00\x00",
@@ -28,16 +28,15 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
            byte_count: "\xA0\x00",
         buffer_format: "\x02",
-       dialect_string: "NT LM 0.12",
+       dialect_string: "NT LM 0.12\x00",
      }.values.reduce(:+).bytes.pack('C*')
   end
 
   context 'actual packet size is larger than the allocated size' do
-    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE.new(params: {dialect_string: {n_bytes:10, value: "NT LM 0.12 123" }}) }
+    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE_REQUEST.new(params: {dialect_string: {n_bytes:10, value: "NT LM 0.12 123" }}) }
 
     describe '#validate' do
       it 'returns false' do
-        smb_com_negotiate.build
         expect{smb_com_negotiate.validate_actual_gt_allocated}.to \
           raise_error('Actual packet size is larger than the allocated size')      end
     end
@@ -49,7 +48,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
   #defaults
   context 'params NOT specified during SMB_COM_NEGOTIATE creation' do
-    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE.new }
+    let(:smb_com_negotiate) { SMB_COM_NEGOTIATE_REQUEST.new }
 
     # WHAT IT DOES (use actual objects as fixtures
     #               to guarantee self-consistency)
@@ -59,6 +58,11 @@ RSpec.describe SMB_COM_NEGOTIATE do
         smb_com_negotiate.build
         expect(smb_com_negotiate.packet).to eql packet_default_spec
                                                 # top let(:packet_default_spec)
+      end
+
+      it 'returns the packet' do
+        expect(smb_com_negotiate.build).to eql packet_default_spec
+                                               # top let(:packet_default_spec)
       end
     end
 
@@ -244,7 +248,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
       it 'includes the flags value default' do
         value   = normalize(params[:flags][:value])
-        default = normalize("\x00")
+        default = normalize("\x18")
 
         expect(value).to eql default
       end
@@ -258,7 +262,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
       it 'includes the flags2 value default' do
         value   = normalize(params[:flags2][:value])
-        default = normalize("\x00")
+        default = normalize("\x48\x01")
 
         expect(value).to eql default
       end
@@ -314,7 +318,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
       it 'includes the tid value default' do
         value   = normalize(params[:tid][:value])
-        default = normalize("\x00")
+        default = normalize("\xFF\xFF")
 
         expect(value).to eql default
       end
@@ -400,7 +404,7 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
       it 'includes the byte_count value default' do
         value   = normalize(params[:byte_count][:value])
-        default = normalize("\xA0")
+        default = normalize("\xA0\x00")
 
         expect(value).to eql default
       end
@@ -421,14 +425,14 @@ RSpec.describe SMB_COM_NEGOTIATE do
 
       it 'includes the dialect_string n_bytes default' do
         n_bytes = params[:dialect_string][:n_bytes]
-        default = 10
+        default = 11
 
         expect(n_bytes).to eql default
       end
 
       it 'includes the dialect_string value default' do
         value   = normalize(params[:dialect_string][:value])
-        default = normalize("NT LM 0.12")
+        default = normalize("NT LM 0.12\x00")
 
         expect(value).to eql default
       end
