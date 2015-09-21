@@ -4,6 +4,15 @@ module RubySMB
 module SMB1
 module Packet
 RSpec.describe Composite_Field do
+
+  describe 'Composite_Field' do
+    composite = Composite_Field.new
+
+    it 'is a kind of Field' do
+      expect(composite.kind_of? Field).to eql true
+    end
+  end
+
   context 'attrs NOT specified during Field creation' do
     let(:composite) { Composite_Field.new }
 

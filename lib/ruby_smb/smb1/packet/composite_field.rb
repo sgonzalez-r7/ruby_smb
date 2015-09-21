@@ -1,7 +1,7 @@
 module RubySMB
 module SMB1
 module Packet
-class  Composite_Field
+class  Composite_Field < Field
   attr_reader :fields
 
   def initialize(&block)
