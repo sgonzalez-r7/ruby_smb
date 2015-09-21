@@ -39,6 +39,16 @@ RSpec.describe Composite_Field do
       end
     end
 
+    describe '#name=' do
+      let(:leaf_field) { Leaf_Field.new do |f|
+                           f.name = :of_hemp
+                         end }
+
+      it 'sets attr:name' do
+        expect(leaf_field.name).to eql :of_hemp
+      end
+    end
+
     describe '#n_bytes' do
       let(:field_1)   { instance_double('field_1', value: "\xFF234") }
       let(:field_2)   { instance_double('field_2', value: "\xFF2345") }
