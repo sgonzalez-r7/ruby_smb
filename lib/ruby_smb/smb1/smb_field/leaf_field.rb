@@ -1,6 +1,6 @@
 module RubySMB
 module SMB1
-module RubySMB_Field
+module SMB_Field
 class  Leaf_Field < Field
   attr_accessor :value
   attr_writer   :n_bytes
@@ -39,6 +39,7 @@ class  Leaf_Field < Field
 
     padding
   end
+end
 end
 end
 end
