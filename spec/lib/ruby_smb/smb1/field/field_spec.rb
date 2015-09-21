@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module RubySMB
 module SMB1
-module Packet
+module SMB_Field
 RSpec.describe Field do
 
   context 'attrs NOT specified during Field creation' do

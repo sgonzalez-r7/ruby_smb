@@ -1,6 +1,5 @@
 module RubySMB
 module SMB1
-module Packet
 class  Composite_Field < Field
   attr_reader :fields
 
@@ -29,7 +28,6 @@ class  Composite_Field < Field
     @fields << field
   end
 
-end
 end
 end
 end

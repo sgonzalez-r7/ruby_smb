@@ -2,7 +2,7 @@
 # as defined in [MS-SMB](https://msdn.microsoft.com/en-us/library/cc246231.aspx)
 module RubySMB
 module SMB1
-  autoload :Command, 'ruby_smb/smb1/command'
-  autoload :Packet,  'ruby_smb/smb1/packet'
+  autoload :Command,   'ruby_smb/smb1/command'
+  autoload :SMB_Field, 'ruby_smb/smb1/smb_field'
 end
 end

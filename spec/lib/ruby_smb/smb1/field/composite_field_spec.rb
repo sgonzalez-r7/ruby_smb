@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module RubySMB
 module SMB1
-module Packet
+module SMB_Field
 RSpec.describe Composite_Field do
 
   describe 'Composite_Field' do
@@ -110,7 +110,6 @@ RSpec.describe Composite_Field do
     end
 
   end
-end
 end
 end
 end

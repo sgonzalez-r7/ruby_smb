@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module RubySMB
 module SMB1
-module Packet
+module SMB_Field
 RSpec.describe Leaf_Field do
 
   describe 'Leaf_Field' do
