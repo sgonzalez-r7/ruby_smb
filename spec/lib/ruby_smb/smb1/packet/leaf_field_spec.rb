@@ -5,8 +5,12 @@ module SMB1
 module Packet
 RSpec.describe Leaf_Field do
 
-  describe '#n_bytes=' do
-    it 'updates attr:value padding'
+  describe 'Leaf_Field' do
+    field = Leaf_Field.new
+
+    it 'is a kind of Field' do
+      expect(field.kind_of? Field).to eql true
+    end
   end
 
   context 'Leaf_Field.new() - no args' do

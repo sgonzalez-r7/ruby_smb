@@ -1,7 +1,7 @@
 module RubySMB
 module SMB1
 module Packet
-class  Leaf_Field
+class  Leaf_Field < Field
   attr_accessor :name, :value
   attr_writer   :n_bytes
 

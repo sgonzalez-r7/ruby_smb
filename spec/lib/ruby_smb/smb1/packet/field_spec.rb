@@ -9,17 +9,7 @@ RSpec.describe Field do
     let(:field) { Field.new }
 
     describe '#name' do
-      it 'returns the default :name' do
-        expect(field.name).to be_nil
-      end
-    end
-  end
-
-  context 'attrs specified during Field creation' do
-    let(:field) { Field.new }
-
-    describe '#name' do
-      it 'returns the default :name' do
+      it 'returns the default name: nil' do
         expect(field.name).to be_nil
       end
     end
@@ -31,7 +21,7 @@ RSpec.describe Field do
                       f.name = :magnetic
                     end }
 
-      it 'returns the default :name' do
+      it 'returns the specified :name' do
         expect(field.name).to eql :magnetic
       end
     end
