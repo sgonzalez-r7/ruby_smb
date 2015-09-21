@@ -3,14 +3,14 @@ require 'spec_helper'
 module RubySMB
 module SMB1
 module Packet
-RSpec.describe RubySMB_Field do
+RSpec.describe Leaf_Field do
 
   describe '#n_bytes=' do
     it 'updates attr:value padding'
   end
 
-  context 'RubySMB_Field.new() - no args' do
-    let(:field) { RubySMB_Field.new }
+  context 'Leaf_Field.new() - no args' do
+    let(:field) { Leaf_Field.new }
 
     # attr
     describe '#name' do
@@ -48,16 +48,16 @@ RSpec.describe RubySMB_Field do
     end
   end
 
-  context 'RubySMB_Field.new { } - block given' do
+  context 'Leaf_Field.new { } - block given' do
     describe '#name=' do
       it 'sets attr:name' do
-        field = RubySMB_Field.new { |f| f.name = :of_hemp }
+        field = Leaf_Field.new { |f| f.name = :of_hemp }
         expect(field.name).to eql :of_hemp
       end
     end
 
     describe '#n_bytes' do
-      let(:field) { RubySMB_Field.new { |f| f.value = "1234" } }
+      let(:field) { Leaf_Field.new { |f| f.value = "1234" } }
 
       it 'returns the number of bytes of attr:value' do
         expect(field.n_bytes).to eql 4
@@ -65,7 +65,7 @@ RSpec.describe RubySMB_Field do
     end
 
     describe '#n_bytes_spec' do
-      let(:field) { RubySMB_Field.new { |f| f.n_bytes_spec = 2 } }
+      let(:field) { Leaf_Field.new { |f| f.n_bytes_spec = 2 } }
 
       it 'returns the number of bytes of attr:value' do
         expect(field.n_bytes_spec).to eql 2
@@ -73,7 +73,7 @@ RSpec.describe RubySMB_Field do
     end
 
     describe '#value=' do
-      let(:field) { RubySMB_Field.new { |f| f.value = "\x02Foo\x00" } }
+      let(:field) { Leaf_Field.new { |f| f.value = "\x02Foo\x00" } }
 
       it 'sets attr:value' do
         expect(field.value).to eql "\x02Foo\x00"
@@ -81,7 +81,7 @@ RSpec.describe RubySMB_Field do
     end
 
     describe 'to_binary_s' do
-      let(:field) { RubySMB_Field.new do |f|
+      let(:field) { Leaf_Field.new do |f|
                       f.n_bytes_spec = 8
                       f.value        = "\x02Foo\x00"
                     end }

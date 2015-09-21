@@ -1,7 +1,7 @@
 module RubySMB
 module SMB1
 module Packet
-class  RubySMB_Composite_Field
+class  Composite_Field
 
 end
 end
