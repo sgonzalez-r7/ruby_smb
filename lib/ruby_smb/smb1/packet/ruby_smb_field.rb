@@ -2,14 +2,14 @@ module RubySMB
 module SMB1
 module Packet
 class  RubySMB_Field
-  attr_accessor :name
-  attr_accessor :type
-  attr_accessor :value
+  attr_accessor :name, :value
+  attr_writer   :n_bytes
 
   def initialize(&block)
-    @name    = ''
-    @type    = nil
-    @value   = ''
+    # defaults
+    @name         = ''
+    @value        = ''
+    @n_bytes      = n_bytes
 
     yield self if block_given?
   end
@@ -18,6 +18,27 @@ class  RubySMB_Field
     value.bytesize
   end
 
+  def n_bytes_spec
+    @n_bytes_spec ||= 0
+  end
+
+  def n_bytes_spec=(n_bytes)
+    @n_bytes_spec ||= n_bytes
+  end
+
+  def to_binary_s
+    value + padding
+  end
+
+  def padding
+    if (n_bytes_spec - n_bytes) > 0
+      padding = "\x00" * (n_bytes_spec - n_bytes)
+    else
+      padding = ''
+    end
+
+    padding
+  end
 end
 end
 end
