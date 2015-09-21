@@ -3,17 +3,22 @@ require 'spec_helper'
 module RubySMB
 module SMB1
 module Packet
-RSpec.describe Field do
+RSpec.describe RubySMB_Field do
   describe '#n_bytes' do
-    let(:field) { Field.new { |f| f.value = "of lavender" } }
+    let(:field) { RubySMB_Field.new { |f| f.value = "1234" } }
 
-    it 'returns the number of bytes of the attr:value' do
-      expect(field.n_bytes).to eql 11
+    it 'returns the number of bytes of attr:value' do
+      expect(field.n_bytes).to eql 4
     end
   end
 
-  context 'Field.new() - no args' do
-    let(:field) { Field.new }
+  describe '#n_bytes=' do
+    it 'updates attr:value padding'
+    it 'validates allocated v. actual'
+  end
+
+  context 'RubySMB_Field.new() - no args' do
+    let(:field) { RubySMB_Field.new }
 
     describe '#name' do
       it 'returns the default name: nil' do
@@ -40,31 +45,24 @@ RSpec.describe Field do
     end
   end
 
-  context 'Field.new { } - block given' do
+  context 'RubySMB_Field.new { } - block given' do
     describe '#name=' do
       it 'sets attr:name' do
-        field = Field.new { |f| f.name = 'of hemp' }
+        field = RubySMB_Field.new { |f| f.name = 'of hemp' }
         expect(field.name).to eql 'of hemp'
-      end
-    end
-
-    describe '#n_bytes=' do
-      it 'sets attr:n_bytes' do
-        field = Field.new { |f| f.n_bytes = 420 }
-        expect(field.n_bytes).to eql 420
       end
     end
 
     describe '#type=' do
       it 'sets attr:type' do
-        field = Field.new { |f| f.type = :uchar }
+        field = RubySMB_Field.new { |f| f.type = :uchar }
         expect(field.type).to eql :uchar
       end
     end
 
     describe '#value=' do
       it 'sets attr:value' do
-        field = Field.new { |f| f.value = '$$$$' }
+        field = RubySMB_Field.new { |f| f.value = '$$$$' }
         expect(field.value).to eql '$$$$'
       end
     end

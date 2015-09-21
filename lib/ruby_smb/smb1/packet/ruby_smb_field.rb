@@ -1,7 +1,7 @@
 module RubySMB
 module SMB1
 module Packet
-class  Field
+class  RubySMB_Field
   attr_accessor :name
   attr_accessor :type
   attr_accessor :value
