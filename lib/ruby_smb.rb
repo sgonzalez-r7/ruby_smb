@@ -12,6 +12,6 @@ module RubySMB
   autoload :Error, 'ruby_smb/error'
   autoload :VERSION, 'ruby_smb/version'
   autoload :Version, 'ruby_smb/version'
-  autoload :SMB2, 'ruby_smb/smb2'
   autoload :SMB1, 'ruby_smb/smb1'
+  autoload :SMB_Field, 'ruby_smb/smb_field'
 end

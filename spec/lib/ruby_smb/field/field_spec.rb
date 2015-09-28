@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 module RubySMB
-module SMB1
 module SMB_Field
 RSpec.describe Field do
 
@@ -27,7 +26,6 @@ RSpec.describe Field do
     end
   end
 
-end
 end
 end
 end
