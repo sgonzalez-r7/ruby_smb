@@ -45,8 +45,15 @@ RSpec.describe Leaf_Field do
   end
 
   describe 'WRITERS' do
+    let(:leaf_field) { Leaf_Field.new(n_bytes: 4) }
+
     describe '#n_bytes=' do
-      it 'sets n_bytes'
+
+      it 'sets n_bytes' do
+        ap leaf_field
+        # expect{leaf_field.n_bytes = 2}.to change{leaf_field.n_bytes}.from(4).to(2)
+      end
+
       it 'updates value'
     end
 

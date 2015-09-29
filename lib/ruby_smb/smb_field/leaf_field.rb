@@ -1,9 +1,7 @@
 module RubySMB
 module SMB_Field
 class  Leaf_Field < Field
-  def initialize_field(args={})
-    @n_bytes_allocated = args.fetch(:n_bytes_allocated, 0)
-    @value             = args.fetch(:value, '')
+  def initialize_field(n_bytes: nil, value: nil)
   end
 
   def n_bytes
