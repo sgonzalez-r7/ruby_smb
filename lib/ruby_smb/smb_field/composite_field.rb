@@ -1,11 +1,8 @@
 module RubySMB
 module SMB_Field
 class  Composite_Field < Field
-  attr_reader :fields
-
-  def initialize(&block)
-    @fields = []
-    yield self if block_given?
+  def initialize_field(args={})
+    @fields = args.fetch(:fields, [])
   end
 
   def add_field(field)

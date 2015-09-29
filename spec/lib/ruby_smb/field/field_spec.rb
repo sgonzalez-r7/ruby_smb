@@ -16,9 +16,7 @@ RSpec.describe Field do
 
   context 'attrs specified during Field creation' do
     describe '#name' do
-      let(:field) { Field.new do |f|
-                      f.name = :magnetic
-                    end }
+      let(:field) { Field.new(name: :magnetic) }
 
       it 'returns the specified :name' do
         expect(field.name).to eql :magnetic

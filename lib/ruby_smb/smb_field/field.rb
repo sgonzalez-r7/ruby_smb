@@ -1,10 +1,21 @@
 module RubySMB
 module SMB_Field
 class  Field
-  attr_accessor :name
+  def initialize(args={})
+    @name = args.fetch(:name, nil)
+    initialize_field(args)
+  end
 
-  def initialize(&block)
-    yield self if block_given?
+  def initialize_field
+    nil
+  end
+
+  def name
+    @name
+  end
+
+  def name=(name)
+    @name = name
   end
 end
 end

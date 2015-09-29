@@ -4,117 +4,85 @@ module RubySMB
 module SMB_Field
 RSpec.describe Leaf_Field do
 
-  describe 'Leaf_Field' do
-    leaf_field = Leaf_Field.new
-
-    it 'is a kind of Field' do
-      expect(leaf_field.kind_of? Field).to eql true
+  describe 'INHERITANCE' do
+    let(:leaf_field) { Leaf_Field.new }
+    describe '#kind_of?' do
+      it 'is a Field' do
+        expect(leaf_field.kind_of? Field).to eql true
+      end
     end
   end
 
-  context 'Leaf_Field.new() - no args' do
-    let(:leaf_field) { Leaf_Field.new }
+  describe 'CONSTRUCTION' do
+    context '#new() DEFAULTS' do
+      let(:leaf_field) { Leaf_Field.new }
 
-    # attr
-    describe '#name' do
-      it 'returns the default name: empty string' do
-        expect(leaf_field.name).to eql ''
+      it 'sets n_bytes_allocated' do
+        expect(leaf_field.n_bytes_allocated).to eql 0
       end
-    end
 
-    # attr
-    describe '#n_bytes' do
-      it 'calculates :n_bytes from padded default value: empty string' do
-        expect(leaf_field.n_bytes).to eql 0
-      end
-    end
-
-    # attr
-    describe '#n_bytes_spec' do
-      it 'returns the default n_bytes_spec: 0' do
-        expect(leaf_field.n_bytes).to eql 0
-      end
-    end
-
-    # attr
-    describe '#value' do
-      it 'returns default value: empty string' do
+      it 'sets value to an empty string' do
         expect(leaf_field.value).to eql ''
       end
     end
 
-    # behavior
-    describe '#to_binary_s' do
-      it 'calculates binary string from padded default value: empty string' do
-        expect(leaf_field.to_binary_s).to eql ''
+    context '#new(args)' do
+      let(:leaf_field) { Leaf_Field.new(name: :of_glory,
+                           n_bytes_allocated: 2,
+                                       value: "\x02HOOrah\x00") }
+      it 'sets name' do
+        expect(leaf_field.name).to eql :of_glory
+      end
+
+      it 'sets n_bytes_allocated' do
+        expect(leaf_field.n_bytes_allocated).to eql 2
+      end
+
+      it 'sets value' do
+        expect(leaf_field.value).to eql "\x02HOOrah\x00"
       end
     end
   end
 
-  context 'Leaf_Field.new { } - block given' do
-    describe '#name=' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.name = :of_hemp
-                         end }
-
-      it 'sets attr:name' do
-        expect(leaf_field.name).to eql :of_hemp
-      end
-    end
-
-    describe '#n_bytes' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.value = "1234"
-                         end }
-
-      it 'returns the number of bytes of attr:value' do
-        expect(leaf_field.n_bytes).to eql 4
-      end
-    end
-
-    describe '#n_bytes_spec' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.n_bytes_spec = 2
-                         end }
-
-      it 'returns the number of bytes of attr:value' do
-        expect(leaf_field.n_bytes_spec).to eql 2
-      end
-    end
-
-    describe '#to_binary_s' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.n_bytes_spec = 8
-                           f.value        = "\x02Foo\x00"
-                         end }
-
-      it 'renders :value to a padded binary string' do
-        expect(leaf_field.to_binary_s).to eql "\x02Foo\x00\x00\x00\x00"
-      end
-    end
-
-    describe '#padding' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.n_bytes_spec = 8
-                           f.value        = "\x02Foo\x00"
-                         end }
-
-      it 'string of p null bytes, where p is n_bytes_spec - n_bytes' do
-        expect(leaf_field.padding).to eql "\x00\x00\x00"
-      end
+  describe 'WRITERS' do
+    describe '#n_bytes=' do
+      it 'sets n_bytes'
+      it 'updates value'
     end
 
     describe '#value=' do
-      let(:leaf_field) { Leaf_Field.new do |f|
-                           f.value = "\x02Foo\x00"
-                         end }
+      it 'sets value'
+      it 'updates n_bytes'
+    end
+  end
 
-      it 'sets attr:value' do
-        expect(leaf_field.value).to eql "\x02Foo\x00"
+
+  describe 'READERS' do
+    describe '#binary_s' do
+      context 'allocated > value' do
+        let(:leaf_field) { Leaf_Field.new(n_bytes_allocated: 8,
+                                                      value: "\x02YOLO\x00") }
+        it 'adds NULL padding'
+      end
+
+      context 'allocated = value' do
+        let(:leaf_field) { Leaf_Field.new(n_bytes_allocated: 6,
+                                                      value: "\x02YOLO\x00") }
+        it 'does NOT add NULL padding'
+      end
+
+      context 'allocated < value' do
+         let(:leaf_field) { Leaf_Field.new(n_bytes_allocated: 4,
+                                                      value: "\x02YOLO\x00") }
+
+         it 'truncates the value'
       end
     end
-
   end
+
+
+
+
 end
 end
 end
