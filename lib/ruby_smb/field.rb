@@ -1,5 +1,6 @@
 module RubySMB
 class  Field
+  autoload :Composite, 'ruby_smb/field/composite'
   def initialize(children:  [], name:  nil, n_bytes:  0, value:  '')
     @children  =  children
     @name      =  name
@@ -9,6 +10,9 @@ class  Field
 
   def add_child(child)
     children << child
+  end
+
+  def ancestors
   end
 
   def delete_child(field)
