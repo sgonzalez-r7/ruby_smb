@@ -1,5 +1,4 @@
 module RubySMB
-module SMB_Field
 class  Field
   def initialize(children:  [], name:  nil, n_bytes:  0, value:  '')
     @children  =  children
@@ -71,7 +70,5 @@ private
   def padding
     padding = "\x00" * margin
   end
-
-end
 end
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 module RubySMB
-module SMB_Field
 RSpec.describe Field do
   describe 'CONSTRUCTION' do
     describe '#new() - Reader DEFAULTS' do
@@ -144,6 +143,5 @@ RSpec.describe Field do
       end
     end
   end
-end
 end
 end

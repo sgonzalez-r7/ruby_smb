@@ -13,5 +13,5 @@ module RubySMB
   autoload :VERSION, 'ruby_smb/version'
   autoload :Version, 'ruby_smb/version'
   autoload :SMB1, 'ruby_smb/smb1'
-  autoload :SMB_Field, 'ruby_smb/smb_field'
+  autoload :Field, 'ruby_smb/field'
 end
